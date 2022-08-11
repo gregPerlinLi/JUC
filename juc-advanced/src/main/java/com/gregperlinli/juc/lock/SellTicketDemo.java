@@ -12,9 +12,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SellTicketDemo {
     public static void main(String[] args) {
         Ticket ticket = new Ticket();
-        new Thread(() -> { for (int i = 0; i < 55; i++) ticket.sell(); }, "a").start();
-        new Thread(() -> { for (int i = 0; i < 55; i++) ticket.sell(); }, "b").start();
-        new Thread(() -> { for (int i = 0; i < 55; i++) ticket.sell(); }, "c").start();
+        new Thread(() -> { for (int i = 0; i < 55; i++) { ticket.sell(); } }, "a").start();
+        new Thread(() -> { for (int i = 0; i < 55; i++) { ticket.sell(); } }, "b").start();
+        new Thread(() -> { for (int i = 0; i < 55; i++) { ticket.sell(); } }, "c").start();
     }
 }
 
