@@ -26,5 +26,10 @@ public class InterruptDemo2 {
 
         System.out.println("====> 1) Interrupt flag after T1 thread calling interrupt() method: " + t1.isInterrupted());
 
+        // Pause the thread for a few seconds
+        try { TimeUnit.SECONDS.sleep(4); } catch ( InterruptedException e ) { e.printStackTrace(); }
+
+        System.out.println("====> 3) Interrupt flag after T1 thread calling interrupt() method: " + t1.isInterrupted());
+
     }
 }
