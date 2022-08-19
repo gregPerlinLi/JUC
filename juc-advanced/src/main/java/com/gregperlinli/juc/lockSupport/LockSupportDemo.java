@@ -11,6 +11,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class LockSupportDemo {
     public static void main(String[] args) {
+
+    }
+
+    private static void lockAwaitSignal() {
         Lock lock = new ReentrantLock();
         Condition condition = lock.newCondition();
         new Thread(() -> {
