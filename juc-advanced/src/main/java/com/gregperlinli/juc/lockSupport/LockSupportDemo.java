@@ -1,6 +1,9 @@
 package com.gregperlinli.juc.lockSupport;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author gregPerlinLi
@@ -8,6 +11,36 @@ import java.util.concurrent.TimeUnit;
  */
 public class LockSupportDemo {
     public static void main(String[] args) {
+        Lock lock = new ReentrantLock();
+        Condition condition = lock.newCondition();
+        new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println("====> " + Thread.currentThread().getName() +"\t ----> Come in ...");
+                condition.await();
+                System.out.println("====> " + Thread.currentThread().getName() + "\t ----> Awaken ...");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } finally {
+                lock.unlock();
+            }
+        }, "t1").start();
+
+        // Pause the thread for a few seconds
+        try { TimeUnit.SECONDS.sleep(1); } catch ( InterruptedException e ) { e.printStackTrace(); }
+
+        new Thread(() -> {
+            lock.lock();
+            try {
+                condition.signal();
+                System.out.println("====> " + Thread.currentThread().getName() + "\t ----> Send notify ...");
+            } finally {
+                lock.unlock();
+            }
+        }, "t2").start();
+    }
+
+    private static void syncWaitNotify() {
         Object objectLock = new Object();
         new Thread(() -> {
             synchronized (objectLock) {
