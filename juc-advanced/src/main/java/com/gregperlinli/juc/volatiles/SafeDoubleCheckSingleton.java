@@ -5,7 +5,10 @@ package com.gregperlinli.juc.volatiles;
  * @date 2022-11-01
  */
 public class SafeDoubleCheckSingleton {
-    private static SafeDoubleCheckSingleton singleton;
+    /**
+     * Implement thread-safe delayed initialization through volatile declaration
+     */
+    private volatile static SafeDoubleCheckSingleton singleton;
 
     /**
      * Privatization construction method
@@ -23,6 +26,7 @@ public class SafeDoubleCheckSingleton {
             synchronized ( SafeDoubleCheckSingleton.class ) {
                 if ( singleton == null ) {
                     // TODO: Hazards: In a multi-threaded environment, due to reordering, the object may be read by other threads before initialization.
+                    // Solution: Use volatile to prevent reordering of "Initialize object" and "Set singleton to point to memory space"
                     singleton = new SafeDoubleCheckSingleton();
                 }
             }
