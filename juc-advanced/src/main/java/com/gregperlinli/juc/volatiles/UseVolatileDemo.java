@@ -27,4 +27,19 @@ public class UseVolatileDemo {
             flag = false;
         }, "t2").start();
     }
+
+    /**
+     * Use: When reading is much more than writing, a combination of internal lock and volatile variables is used to reduce the overhead of synchronization.
+     * Reason: Use volatile to ensure the visibility of the read operation; use synchronized to ensure the atomicity of the operation.
+     */
+    public class Counter {
+        private volatile int value;
+
+        public int getValue() {
+            return value;   // Use volatile to ensure the visibility of read operations.
+        }
+        public synchronized int increment() {
+            return value++; // Use synchronized to ensure the atomicity of compound operations.
+        }
+    }
 }
