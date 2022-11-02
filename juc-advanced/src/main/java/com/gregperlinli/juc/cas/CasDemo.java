@@ -13,5 +13,6 @@ public class CasDemo {
         AtomicInteger atomicInteger = new AtomicInteger(5);
         System.out.println("====> " + atomicInteger.compareAndSet(5, 2022) + "\t Result: " + atomicInteger.get());
         System.out.println("====> " + atomicInteger.compareAndSet(5, 2022) + "\t Result: " + atomicInteger.get());
+        System.out.println("====> " + atomicInteger.getAndIncrement() + "\t Result: " + atomicInteger.get());
     }
 }
