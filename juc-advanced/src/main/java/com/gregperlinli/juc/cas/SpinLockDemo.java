@@ -37,6 +37,7 @@ public class SpinLockDemo {
         }
     }
 
+
     public void unlock() {
         Thread thread = Thread.currentThread();
         System.out.println("====> " + Thread.currentThread().getName() + "\t ----> task over, unlock ...");
