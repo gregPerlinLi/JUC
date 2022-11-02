@@ -12,9 +12,13 @@ import java.util.concurrent.atomic.AtomicStampedReference;
  */
 public class AtomicStampedDemo {
     public static void main(String[] args) {
-        Book javaBook = new Book();
+        Book javaBook = new Book(1, "javaBook");
         AtomicStampedReference<Book> atomicStampedReference = new AtomicStampedReference<>(javaBook, 1);
         System.out.println("====> " + atomicStampedReference.getReference() + "\t ----> Version: " + atomicStampedReference.getStamp());
+        Book mysqlBook = new Book(2, "mysqlBook");
+        boolean b;
+        b = atomicStampedReference.compareAndSet(javaBook, mysqlBook, atomicStampedReference.getStamp(), atomicStampedReference.getStamp() + 1);
+        System.out.println("====> " + b + "\t" + atomicStampedReference.getReference() + "\t ----> Version: " + atomicStampedReference.getStamp());
     }
 }
 
