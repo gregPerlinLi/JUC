@@ -19,6 +19,8 @@ public class AtomicStampedDemo {
         boolean b;
         b = atomicStampedReference.compareAndSet(javaBook, mysqlBook, atomicStampedReference.getStamp(), atomicStampedReference.getStamp() + 1);
         System.out.println("====> " + b + "\t" + atomicStampedReference.getReference() + "\t ----> Version: " + atomicStampedReference.getStamp());
+        b = atomicStampedReference.compareAndSet(mysqlBook, javaBook, atomicStampedReference.getStamp(), atomicStampedReference.getStamp() + 1);
+        System.out.println("====> " + b + "\t" + atomicStampedReference.getReference() + "\t ----> Version: " + atomicStampedReference.getStamp());
     }
 }
 
