@@ -15,9 +15,13 @@ public class ThreadLocalDemo {
             new Thread(() -> {
                 int size = new Random().nextInt(5) + 1;
                 // System.out.println("====> " + size);
-                for (int j = 0; j < size; j++) {
-                    house.saleHouse();
-                    house.saleVolumeByThreadLocal();
+                try {
+                    for (int j = 0; j < size; j++) {
+                        house.saleHouse();
+                        house.saleVolumeByThreadLocal();
+                    }
+                } finally {
+                    house.saleVolume.remove();
                 }
                 System.out.println("====> No. " + Thread.currentThread().getName() + " sold " + house.saleVolume.get() + " houses ...");
             }, "t" + i).start();
