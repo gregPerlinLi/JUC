@@ -1,7 +1,8 @@
 package com.gregperlinli.juc.tl;
 
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
+import java.lang.ref.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,7 +11,28 @@ import java.util.concurrent.TimeUnit;
  */
 public class ReferenceDemo {
     public static void main(String[] args) {
-
+        MyObject myObject = new MyObject();
+        ReferenceQueue<MyObject> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<MyObject> phantomReference = new PhantomReference<>(myObject, referenceQueue);
+        System.out.println("====> " + phantomReference.get());
+        List<byte[]> list = new ArrayList<>();
+        new Thread(() -> {
+            while ( true ) {
+                list.add(new byte[1 * 1024 * 1024]);
+                // Pause the thread for a few milliseconds
+                try { TimeUnit.MILLISECONDS.sleep(500); } catch ( InterruptedException e ) { e.printStackTrace(); }
+                System.out.println("====> List add ok: " + phantomReference.get());
+            }
+        }, "t1").start();
+        new Thread(() -> {
+            while ( true ) {
+                Reference<? extends MyObject> reference = referenceQueue.poll();
+                if ( reference != null ) {
+                    System.out.println("====> There is a phantomReference join the queue");
+                    break;
+                }
+            }
+        }, "t2").start();
     }
 
     private static void weakReference() {
