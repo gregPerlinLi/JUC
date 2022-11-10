@@ -1,6 +1,7 @@
 package com.gregperlinli.juc.tl;
 
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -9,6 +10,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class ReferenceDemo {
     public static void main(String[] args) {
+
+    }
+
+    private static void weakReference() {
+        WeakReference<MyObject> weakReference = new WeakReference<>(new MyObject());
+        System.out.println("====> gc before with enough memory: " + weakReference.get());
+        System.gc();
+        // Pause the thread for a few seconds
+        try { TimeUnit.SECONDS.sleep(1); } catch ( InterruptedException e ) { e.printStackTrace(); }
+        System.out.println("====> gc after with enough memory: " + weakReference.get());
+    }
+
+    private static void softReference() {
         SoftReference<MyObject> softReference = new SoftReference<>(new MyObject());
         System.out.println("====> Soft reference: " + softReference.get());
         System.gc();
