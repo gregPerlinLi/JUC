@@ -4,15 +4,26 @@ import org.openjdk.jol.info.ClassLayout;
 
 /**
  * @author gregperlinli
- * @date 2021/11/26 16:36g
+ * @date 2021/11/26 16:36
+ * VM Options: -XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0
  */
 public class SynchronizedUpDemo {
-    private static Object objectLock = new Object();
+
     public static void main(String[] args) {
-        deadweightLock();
+        Object o = new Object();
+        System.out.println("==> It's supposed to be bias lock ");
+        System.out.println(ClassLayout.parseInstance(o).toPrintable());
+
+        o.hashCode();
+
+        synchronized (o) {
+            System.out.println("==> It's supposed to be bias lock, but because of the identity hash code, it will be directly upgraded to a lightweight lock ");
+            System.out.println(ClassLayout.parseInstance(o).toPrintable());
+        }
     }
 
     private static void deadweightLock() {
+        Object objectLock = new Object();
         new Thread(() -> {
             synchronized (objectLock){
                 System.out.println(ClassLayout.parseInstance(objectLock).toPrintable());
