@@ -11,6 +11,16 @@ public class SynchronizedUpDemo {
 
     public static void main(String[] args) {
         Object o = new Object();
+
+        synchronized (o) {
+            o.hashCode();
+            System.out.println("==> Bias locking process encounters a request for consistency hash computation, immediately revoke the bias lock, inflate to heavyweight lock");
+            System.out.println(ClassLayout.parseInstance(o).toPrintable());
+        }
+    }
+
+    private static void test1() {
+        Object o = new Object();
         System.out.println("==> It's supposed to be bias lock ");
         System.out.println(ClassLayout.parseInstance(o).toPrintable());
 
@@ -22,7 +32,7 @@ public class SynchronizedUpDemo {
         }
     }
 
-    private static void deadweightLock() {
+    private static void heavyweightLock() {
         Object objectLock = new Object();
         new Thread(() -> {
             synchronized (objectLock){
