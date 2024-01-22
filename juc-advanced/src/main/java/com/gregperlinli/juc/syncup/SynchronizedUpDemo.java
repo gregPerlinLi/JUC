@@ -4,20 +4,20 @@ import org.openjdk.jol.info.ClassLayout;
 
 /**
  * @author gregperlinli
- * @date 2021/11/26 16:36
- * VM Options: -XX:-UseBiasedLocking
+ * @date 2021/11/26 16:36g
  */
 public class SynchronizedUpDemo {
     private static Object objectLock = new Object();
     public static void main(String[] args) {
+        deadweightLock();
+    }
+
+    private static void deadweightLock() {
         new Thread(() -> {
             synchronized (objectLock){
                 System.out.println(ClassLayout.parseInstance(objectLock).toPrintable());
             }
         }, "t1").start();
-
-        System.out.println("===================================================\n");
-
         new Thread(() -> {
             synchronized (objectLock){
                 System.out.println(ClassLayout.parseInstance(objectLock).toPrintable());
@@ -25,7 +25,7 @@ public class SynchronizedUpDemo {
         }, "t2").start();
     }
 
-    private static void casLock() {
+    private static void lightweightLock() {
         Object o = new Object();
         new Thread(() -> {
             synchronized (o) {
